@@ -1,0 +1,13 @@
+body {
+	margin:0px;
+}
+
+#header {
+	display:flex;
+	justify-content: space-between;
+  background-color: #ff000091; /* Grey background */
+  color:black;
+  position: sticky; /* Fixed position - sit on top of the page */
+  top: 0;
+  width: 100%; /* Full width */
+}

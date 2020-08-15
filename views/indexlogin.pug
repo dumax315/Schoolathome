@@ -1,0 +1,16 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width')
+    title repl.it
+    link(href='style.css', rel='stylesheet', type='text/css')
+  body
+    #header
+      #location=location
+      #signedInAs Signed in as: 
+        =username
+      a#signOut(href='https://schoolathome.theohalpern.repl.co/signout') Sign out
+      script(src='https://apis.google.com/js/platform.js', async='', defer='')
+      meta(name='google-signin-client_id', content='985596922523-tr74rdm03hj1mh6tg2hpmnirvcrm4v14.apps.googleusercontent.com')
+    script(src='script.js')

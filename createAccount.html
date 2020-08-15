@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>repl.it</title>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+		<a id="cA" href="https://schoolathome.theohalpern.repl.co/login">Login</a>
+		<form id="createForm" action="/signup" method="get">
+			<label for="fname">Username</label>
+			<input type="text" id="fname" name="fname"><br><br>
+			<label for="lname">School</label>
+			<select id="school" name="school" size="3">
+				<option value="WSHS">West Seattle High School</option>
+			</select>
+			<label for="lname">Grade</label>
+			<select id="grade" name="grade" size="4">
+				<option value=9>9</option>
+				<option value=10>10</option>
+				<option value=11>11</option>
+				<option value=12>12</option>
+			</select>
+			<div class="g-signin2" data-onsuccess="onSignIn"></div>
+		</form>
+		<script src="https://apis.google.com/js/platform.js" async defer></script>
+		<meta name="google-signin-client_id" content="985596922523-tr74rdm03hj1mh6tg2hpmnirvcrm4v14.apps.googleusercontent.com">
+    <script>
+			function onSignIn(googleUser) {
+				function getOption(id) { 
+					selectElement = document.querySelector('#'+id); 
+										
+					return(selectElement.options[selectElement.selectedIndex].value); 
+
+					
+        } 
+				var id_token = googleUser.getAuthResponse().id_token;
+				var xhr = new XMLHttpRequest();
+				xhr.open('POST', 'https://schoolathome.theohalpern.repl.co/signup');
+				xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+				xhr.onload = function() {
+					console.log('Signed in as: ' + xhr.responseText);
+				};
+
+					xhr.send('idtoken=' + id_token + '&username=' + document.getElementById("createForm").elements[0].value + '&school=' + getOption("school") + '&grade=' + getOption("grade");
+				}
+		</script>
+  </body>
+</html>
