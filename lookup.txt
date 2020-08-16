@@ -1,0 +1,37 @@
+
+/* //adding table
+var sql = "CREATE TABLE WSHSclasses (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255), teacher VARCHAR(255), description VARCHAR(255))";
+con.query(sql, function (err, result) {
+	console.log("Table created");
+});
+//adding info
+var sql = "INSERT INTO schools (lName, sName) VALUES ('Seattle Academy of Arts and Sciences', 'SAAS')";
+con.query(sql, function (err, result) {
+	console.log("1 record inserted");
+});
+// deleteing info
+var sql = "DELETE FROM schools WHERE sName = 'Saas'";
+con.query(sql, function (err, result) {
+	console.log("Number of records deleted: " + result.affectedRows);
+});
+//updating
+var sql = "UPDATE customers SET address = 'Canyon 123' WHERE address = 'Valley 345'";
+con.query(sql, function (err, result) {
+	console.log(result.affectedRows + " record(s) updated");
+});\
+var sql = "DROP TABLE WSHSAPWHposts";
+con.query(sql, function (err, result) {
+	console.log("Table deleted");
+});
+var sql = "CREATE TABLE WSHSAPWHposts (id INT AUTO_INCREMENT PRIMARY KEY, title VARCHAR(255), body TEXT(4080), poster VARCHAR(255), comments TEXT(16320), flair VARCHAR(255))";
+con.query(sql, function (err, result) {
+	console.log(err);
+});
+let spll = 'Even though I keep looking and looking I cant figure out what <sup>superscripted</sup> <sub>subscripted</sub>quare.<b> Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</b> Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Do<del>blue</del> elis, ultricies <i>nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. </i>Donec pede justo, fringilla vel, aliquet nec, vulputate <em>This text is emphasized</em>';
+
+var sql = "INSERT INTO WSHSAPWHposts (title, poster, body) VALUES ('What happend in tenimen Square', '116743678376729095372','Even though I keep looking and looking I cant figure out what <sup>superscripted</sup> <sub>subscripted</sub>quare.<b> Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</b> Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Do<del>blue</del> elis, ultricies <i>nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. </i>Donec pede justo, fringilla vel, aliquet nec, vulputate <em>This text is emphasized</em>')";
+con.query(sql, function (err, result) {
+	console.log(err);
+	console.log(result);
+});
+*/

@@ -1,0 +1,34 @@
+extends headerLayout.pug
+
+block content
+	#content
+		each clas in classes	
+			a(href= "/s/" +school + "/"+ clas.sName).school= clas.name
+				br
+				p= clas.sName
+		.school Add a Class That Doesn't Have a Board Yet
+			if logedin
+				form(action='/newclass' method="post")
+					label(for='name') *Class Name*:
+					br
+					input(type='text', name='name', required, autocomplete="off")
+					br
+					label(for='sName') *Shortened Class Name*:
+					br
+					input(type='text', name='sName',pattern="[A-Za-z0-9]{1,10}", title="Some Special Characters And Spaces Are Not Allowed and it must be below 10 characters", autocomplete="off")
+					br
+					label(for='teacher') *Teacher*:
+					br
+					input(type='text', name='teacher', required, autocomplete="off")
+					br
+					label(for='description:') Description:
+					br
+					input(type='text', name='description', autocomplete="off")
+					br
+					input(type="hidden", name='school', autocomplete="off", value=school)
+					br
+					br
+					input(type='submit', value='Submit')
+			else
+				p Login to add your classes
+			

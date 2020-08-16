@@ -5,9 +5,18 @@ body {
 #header {
 	display:flex;
 	justify-content: space-between;
-  background-color: #ff000091; /* Grey background */
+  background-color: #ff000091; 
   color:black;
   position: sticky; /* Fixed position - sit on top of the page */
   top: 0;
   width: 100%; /* Full width */
+}
+#content {
+	display: flex;
+	flex-direction: column;
+}
+.school{
+	padding:1.333em;
+	background-color:lightblue;
+	margin-top:1em;
 }

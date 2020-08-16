@@ -1,3 +1,4 @@
+
 const express = require('express');
 const {OAuth2Client} = require('google-auth-library');
 var mysql = require('mysql');
@@ -96,11 +97,7 @@ var con = initializeConnection({
 });
 
 
-/* //adding table
-var sql = "CREATE TABLE WSHSclasses (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255), teacher VARCHAR(255), description VARCHAR(255))";
-con.query(sql, function (err, result) {
-	console.log("Table created");
-});*/
+
 
 con.query("SELECT * FROM users", function (err, result, fields) {
 	console.log(result);
@@ -111,9 +108,13 @@ con.query("SELECT * FROM schools", function (err, result, fields) {
 con.query("SELECT * FROM WSHSclasses", function (err, result, fields) {
 	console.log(result);
 });
+/*
+con.query("SELECT * FROM WSHSAPWHposts", function (err, result, fields) {
+	console.log(result);
+});
+*/
 
-
-
+//checks to see if username is taken
 function getUsedNames(tryName,callback) {
 	//var sql = "INSERT INTO users (username,email, id) VALUES ('Theology', 'theomhalpern@gmail.com', '116743678376729095372')";
 	var sql = "SELECT username FROM users WHERE username = ?;"
@@ -124,6 +125,42 @@ function getUsedNames(tryName,callback) {
 		} else 
 			callback(null, result);
   });
+}
+
+//gets all data form the school table
+function getSchools(callback) {
+	con.query("SELECT * FROM schools", function (err, result, fields) {
+		if(err){
+			callback(err,null)
+		}else{
+			callback(null, result);
+		}
+		
+	});
+}
+
+function getClasses(school,callback) {
+	var sql = "SELECT * FROM " +school;
+	con.query(sql, function (err, result, fields) {
+		if(err){
+			callback(err,null)
+		}else{
+			callback(null, result);
+		}
+		
+	});
+}
+
+function getPosts(schoolclass,callback) {
+	var sql = "SELECT * FROM " +school;
+	con.query(sql, function (err, result, fields) {
+		if(err){
+			callback(err,null)
+		}else{
+			callback(null, result);
+		}
+		
+	});
 }
 
 function login(id,callback) {
@@ -197,15 +234,20 @@ async function verify(token) {
 app.use(express.urlencoded());
 
 app.get('/', (req, res) => {
-	console.log("Index")
-	console.log(typeof req.session.user)
-	if (typeof req.session.user == "object") {
-		res.render('indexlogin', { username: req.session.user.username, location: "SchoolAtHome/" });
-		
-	} else {
-		res.render('index', {location: "SchoolAtHome/" });
+	getSchools(function(err, listOfSchools) {
+		if(err){
+			console.log(err)
+		}else{
+			if (typeof req.session.user == "object") {
+				res.render('index', { username: req.session.user.username, location: "SchoolAtHome/", logedin:true,schools: listOfSchools});
+				
+			} else {
+				res.render('index', {location: "SchoolAtHome/", logedin:false, schools: listOfSchools})
 
-	}
+			}
+		}
+	});
+	
 		//res.redirect('/account/'+token);
 });
 app.get('/login', (req, res) => {
@@ -216,22 +258,100 @@ app.get('/login', (req, res) => {
 
 app.get('/signout', (req, res) => {
 	req.session.user = "signotut";
-	console.log(req.session.user)
 	delete req.session.user; 
 	res.sendFile(__dirname + '/signout.html');
 		//res.redirect('/account/'+token);
 });
 
 app.get('/s/:school', function (req, res) {
-  res.render('index', { title: 'Hey', message: 'Hello there!' })
+	let tblname= req.params.school +"classes";
+	const plswork = tblname;
+	getClasses(plswork, function(err, listOfClasses) {
+		if(err){
+			console.log(err)
+		}else{
+			console.log(listOfClasses)
+			if (typeof req.session.user == "object") {
+				res.render('classes', { username: req.session.user.username, location: "SAH/" + req.params.school, logedin:true,classes: listOfClasses, school:req.params.school});
+				
+			} else {
+				res.render('classes', {location: "SAH/" + req.params.school, logedin:false,classes: listOfClasses,school:req.params.school});
+
+			}
+		}
+	});
 })
 
 app.get('/s/:school/:class', function (req, res) {
-  res.send(req.params)
+  let tblname= req.params.school +req.params.class +"posts";
+	const plswork = tblname;
+	getClasses(plswork, function(err, listOfPosts) {
+		if(err){
+			console.log(err)
+		}else{
+			console.log(listOfPosts)
+			if (typeof req.session.user == "object") {
+				res.render('posts', { username: req.session.user.username, location: "SAH/" + req.params.school + "/"+req.params.class, logedin:true,posts: listOfPosts, school:req.params.school,classs:req.params.class});
+				
+			} else {
+				res.render('posts', {location: "SAH/" + req.params.school + "/"+req.params.class, logedin:false,posts: listOfPosts, school:req.params.school,classs:req.params.class});
+
+			}
+		}
+	});
 })
 
-app.get('/s/:school/:class/:postId', function (req, res) {
-  res.send(req.params)
+app.get('/s/:school/:class/:postId', function (req, res)  {
+  res.render(req.params)
+})
+
+app.post('/newclass', (req, res) => {
+	try{
+		if (typeof req.session.user == "object") {
+			if (/[A-Za-z0-9]{1,10}/.test(req.body.sName)){
+				//adding info
+				var sqlt = "INSERT INTO "+ req.body.school+"classes" +" (name, teacher, description, sName) VALUES (?,?,?,?)";
+				console.log(sqlt)
+				const sql = sqlt;
+				console.log([req.body.name,req.body.teacher,req.body.description,req.body.sName]);
+				con.query(sql,[req.body.name,req.body.teacher,req.body.description,req.body.sName], function (err, result) {
+					if(err) {
+						console.log(err)
+						res.render('error', {error:err});
+					}else{
+						console.log(result);
+						var sql = "CREATE TABLE "+req.body.school+req.body.sName+"posts"+" (id INT AUTO_INCREMENT PRIMARY KEY, title VARCHAR(255), body TEXT(4080), poster VARCHAR(255), comments TEXT(16320), flair VARCHAR(255))";
+						con.query(sql, function (err, result) {
+							if(err){
+								console.log(err)
+								res.render('error', {error:err});
+							} else{
+								res.redirect("/s/"+req.body.school)
+							}
+						});
+					}
+					
+				});
+				
+			}else {
+				console.log(err)
+				res.render('error', {error:"Short name invaled: Some Special Characters And Spaces Are Not Allowed and it must be below 10 characters"});
+			}
+			
+			
+		} else {
+			console.log(err)
+			res.render('error', {error:"No user loged in"});
+		}
+	}
+  catch(err) {
+		console.log(err)
+		res.render('error', {error:err});
+	}
+})
+
+app.post('/newpost', (req, res) => {
+  res.render('error', {error:req.body.title});
 })
 
 app.post('/loginenter', async (req, res) => {

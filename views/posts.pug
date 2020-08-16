@@ -1,0 +1,29 @@
+extends headerLayout.pug
+
+block content
+	#content
+		each post in posts	
+			.school= post.title
+				br
+				p= post.poster
+				p= post.body
+				a(href= "/s/" +school + "/"+classs+"/"+ post.id) expand
+		.school Post A New Post
+			if logedin 
+				form(action='/newpost' method="post")
+					label(for='name') *Title*:
+					br
+					input(type='text', name='name', required, autocomplete="off")
+					br
+					label(for='sName') *Body*:
+					br
+					input(type='text', name='sName', autocomplete="off")
+					br
+					label(for='description:') Flair:
+					br
+					input(type='text', name='description', autocomplete="off", disabled)
+					br
+					br
+					input(type='submit', value='Submit')
+			else
+				p Login to post and get answers.
