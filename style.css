@@ -5,18 +5,33 @@ body {
 #header {
 	display:flex;
 	justify-content: space-between;
-  background-color: #ff000091; 
+  background-color:gray; 
   color:black;
   position: sticky; /* Fixed position - sit on top of the page */
-  top: 0;
-  width: 100%; /* Full width */
+  padding:1.2em;
+	top:0;
+  width: calc(100%-2.4em); /* Full width */
 }
 #content {
 	display: flex;
 	flex-direction: column;
+	padding-left:1em;
+	padding-right:1em;
+	
 }
 .school{
-	padding:1.333em;
+	padding:1.3em;
 	background-color:lightblue;
 	margin-top:1em;
+	border: 6px solid red;
+}
+.input {
+	width: 100%;
+  padding: 12px 20px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  font-size: 16px;
+  resize: none;
 }

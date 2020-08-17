@@ -1,0 +1,67 @@
+extends headerLayout.pug
+
+mixin commentsDisp(coms,loc)
+	each comment in coms	
+		.school= comment[0]
+			br
+			p= comment[2]
+			p= comment[1]
+			if (typeof comment[4] == "object")
+				commentsDisp(comment[4],comment[3])
+			.school Post A Reply
+				if logedin 
+					form(action='/newComment/'+loc method="post")
+						label(for='title') *Title*:
+						br
+						textarea.input(name='title', required, autocomplete="off", rows="4" )
+						br
+						label(for='body') *Body*:
+						br
+						textarea.input(name='body', autocomplete="off", rows="12" )
+						br
+						label(for='flair') Flair:
+						br
+						input(type='text', name='flair', autocomplete="off", disabled,value="null")
+						input(type="hidden", name='school', autocomplete="off", value=school)
+						input(type="hidden", name='classs', autocomplete="off", value=classs)
+						input(type="hidden", name='idee', autocomplete="off", value=idSent)
+						br
+						br
+						input(type='submit', value='Submit')
+				else
+					p Login to post and give answers.
+	
+
+block content
+	//-{ username: req.session.user.username, location: "SAH/" + req.params.school + "/"+req.params.class+"/"+thePost.title, logedin:true,post: thePost, comments:thePost.comments, school:req.params.school,classs:req.params.class}
+	#content
+		.school= post.title
+			br
+			p= post.poster
+			p= post.body	
+			.school Post A Reply
+				if logedin 
+					form(action='/newComment/'+loc method="post")
+						label(for='title') *Title*:
+						br
+						textarea.input(name='title', required, autocomplete="off", rows="4" )
+						br
+						label(for='body') *Body*:
+						br
+						textarea.input(name='body', autocomplete="off", rows="12" )
+						br
+						label(for='flair') Flair:
+						br
+						input(type='text', name='flair', autocomplete="off", disabled,value="null")
+						input(type="hidden", name='school', autocomplete="off", value=school)
+						input(type="hidden", name='classs', autocomplete="off", value=classs)
+						input(type="hidden", name='idee', autocomplete="off", value=idSent)
+						br
+						br
+						input(type='submit', value='Submit')
+				else
+					p Login to post and give answers.	
+			+commentsDisp(comments) 
+
+
+		

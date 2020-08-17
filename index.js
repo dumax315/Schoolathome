@@ -63,16 +63,22 @@ function requireLogin (req, res, next) {
 		return next();
 	}
 });*/
-
+//reconnect mysql after error
 function initializeConnection(config) {
-    function addDisconnectHandler(connection) {
-        connection.on("error", function (error) {
+    function addDisconnectHandler(connecti) {
+        connecti.on("error", function (error) {
             if (error instanceof Error) {
                 if (error.code === "PROTOCOL_CONNECTION_LOST") {
                     console.error(error.stack);
                     console.log("Lost connection. Reconnecting...");
 										
-                    con = mysql.createConnection(config);
+                    connection = mysql.createConnection(config);
+										console.log(connection)
+										// Add handlers.
+										addDisconnectHandler(connection);
+
+										connection.connect();
+										con = connection;
                 } else if (error.fatal) {
                     throw error;
                 }
@@ -81,7 +87,6 @@ function initializeConnection(config) {
     }
 
     connection = mysql.createConnection(config);
-
     // Add handlers.
     addDisconnectHandler(connection);
 
@@ -95,7 +100,6 @@ var con = initializeConnection({
   password: "3sAnOYv3UT",
 	database: "bB3Dq1wsqu"
 });
-
 
 
 
@@ -151,16 +155,17 @@ function getClasses(school,callback) {
 	});
 }
 
-function getPosts(schoolclass,callback) {
-	var sql = "SELECT * FROM " +school;
-	con.query(sql, function (err, result, fields) {
-		if(err){
-			callback(err,null)
-		}else{
-			callback(null, result);
-		}
-		
-	});
+function getPost(schoolclass,id,callback) {
+	//var sql = "INSERT INTO users (username,email, id) VALUES ('Theology', 'theomhalpern@gmail.com', '116743678376729095372')";
+	var sqll = "SELECT * FROM "+schoolclass + "posts"+" WHERE id = ?;"
+	const sql = sqll;
+  con.query(sql,[id], function (err, result) {
+		if (err) {
+			callback(err, null);
+		} else 
+			console.log(result)
+			callback(null, result[0]);
+  });
 }
 
 function login(id,callback) {
@@ -173,6 +178,91 @@ function login(id,callback) {
 			callback(null, result);
   });
 }
+
+function strToArr(oldString){
+	console.log(oldString)
+	if (oldString !== null){
+		var newArr = [];
+		var toPush = "";
+		for (i = 1; i < oldString.length; i++){
+			if(oldString.charAt(i) == "["){	
+				var toSend = "";
+				var notfound = true;
+				var numNested = 0;
+				while(notfound){
+					if (oldString.charAt(i) == "]"){
+						numNested = numNested -1;
+						toSend = toSend + oldString.charAt(i);
+						if(numNested == 0){
+							//toSend = toSend + "]";
+							const keyI = i;
+							toPush = strToArr(toSend)
+							newArr.push(toPush)
+							i = keyI
+							toPush = "";
+							notfound = false;
+						}else{
+							//toSend = toSend + oldString.charAt(i);
+						}
+					}else if (oldString.charAt(i) == "["){
+						numNested++;
+						toSend = toSend + oldString.charAt(i);	
+					}else if(oldString.charAt(i) == "'"||oldString.charAt(i) == "]") {
+						//yo
+					} else{
+						toSend = toSend + oldString.charAt(i);
+					}
+					if (i> 400){
+						sleep(2000);
+					}
+					i++;
+					
+				}
+				
+			} else if (oldString.charAt(i) == ",") {
+				newArr.push(toPush)
+				
+				toPush = "";
+			} else if(oldString.charAt(i) == "'"||oldString.charAt(i) == "]") {
+				//yo
+			} else {
+				toPush = toPush + oldString.charAt(i)
+			}
+		}
+		if(toPush !== ''){
+			newArr.push(toPush)
+			toPush = "";
+		}
+		
+		return newArr;
+			
+	}else{
+		const empty= [];
+		return empty
+	}
+}
+//										000000000111111111122222222223333333333444444444455555555556
+//										123456789012345678901234567890123456789012345678901234567890
+
+function arrToStr(oldArr){
+	console.log(oldArr);
+	var newStr = "["
+	for (i = 0; i < oldArr.length; i++) {
+		if (typeof oldArr[i] == "string"){
+			
+			newStr += "'" +oldArr[i]+"',";
+		}else{
+			const keyI = i;
+			newStr +=arrToStr(oldArr[i])+",";
+			i = keyI
+		}
+			
+	}
+	newStr = newStr.slice(0, newStr.length - 1)
+	newStr += "]";
+	return newStr;
+}
+
 
 function createNewAccount(username,id,email,grade,school,callback) {
 	//var sql = "INSERT INTO users (username,email, id) VALUES ('Theology', 'theomhalpern@gmail.com', '116743678376729095372')";
@@ -302,7 +392,25 @@ app.get('/s/:school/:class', function (req, res) {
 })
 
 app.get('/s/:school/:class/:postId', function (req, res)  {
-  res.render(req.params)
+  let tblname= req.params.school +req.params.class;
+	const plswork = tblname;
+	const idToSend = req.params.postId;
+	getPost(plswork, idToSend, function(err, thePost) {
+		if(err){
+			console.log(err)
+		}else{
+			console.log(thePost)
+			const commentsssss=strToArr(thePost.comments)
+			console.log(commentsssss)
+			if (typeof req.session.user == "object") {
+				res.render('post', { username: req.session.user.username, location: "SAH/" + req.params.school + "/"+req.params.class+"/"+thePost.title, logedin:true,post: thePost, comments:commentsssss, school:req.params.school,classs:req.params.class,idSent:idToSend});
+				
+			} else {
+				res.render('post', { location: "SAH/" + req.params.school + "/"+req.params.class+"/"+thePost.title, logedin:false,post: thePost, comments:commentsssss, school:req.params.school,classs:req.params.class,idSent:idToSend});
+
+			}
+		}
+	});
 })
 
 app.post('/newclass', (req, res) => {
@@ -351,7 +459,89 @@ app.post('/newclass', (req, res) => {
 })
 
 app.post('/newpost', (req, res) => {
-  res.render('error', {error:req.body.title});
+  try{
+		if (typeof req.session.user == "object") {
+				//adding info
+			var sqlt = "INSERT INTO "+ req.body.school+ req.body.classs+"posts" +" (title, body, poster) VALUES (?,?,?)";
+			console.log(sqlt)
+			const sql = sqlt;
+			console.log([req.body.title,req.body.body,req.session.user.username])
+			con.query(sql,[req.body.title,req.body.body,req.session.user.username], function (err, result) {
+				if(err) {
+					console.log(err)
+					res.render('error', {error:err});
+				}else{
+					res.redirect("/s/"+req.body.school+"/"+req.body.classs)
+				}
+			});
+			
+		} else {
+			console.log(err)
+			res.render('error', {error:"No user loged in"});
+		}
+	}
+  catch(err) {
+		console.log(err)
+		res.render('error', {error:err});
+	}
+})
+
+app.post('/newcomment', (req, res) => {
+	console.log(req.body.idee)
+  try{
+		if (typeof req.session.user == "object") {
+				//adding info
+			var sqll = "SELECT comments FROM "+ req.body.school+ req.body.classs+"posts"+" WHERE id = "+req.body.idee.toString();
+			console.log(sqll)
+			const sql = sqll;
+			con.query(sql,function (err, result, fields) {
+				if(err){
+					console.log(err)
+				}else{
+					console.log(result[0].comments);
+					var sqlt = "Update "+ req.body.school+ req.body.classs+"posts" +" SET comments = ? WHERE id = "+req.body.idee.toString();
+					console.log(sqlt)
+					const sq = sqlt;
+					var genArr = strToArr(result[0].comments);
+					console.log(genArr)
+					genArr.push([req.body.title,req.body.body,req.session.user.username])
+					console.log(genArr)
+					var generateString = arrToStr(genArr);
+					console.log("gen str = "+generateString)
+					con.query(sq,generateString, function (err, result) {
+						if(err) {
+							console.log(err)
+							res.render('error', {error:err});
+						}else{
+							res.redirect("/s/"+req.body.school+"/"+req.body.classs+"/"+req.body.idee)
+						}
+					});
+				}
+				
+			});
+			/*
+			var sqlt = "INSERT INTO "+ req.body.school+ req.body.classs+"posts" +" (title, body, poster) VALUES (?,?,?)";
+			console.log(sqlt)
+			const sql = sqlt;
+			console.log([req.body.title,req.body.body,req.session.user.username])
+			con.query(sql,[req.body.title,req.body.body,req.session.user.username], function (err, result) {
+				if(err) {
+					console.log(err)
+					res.render('error', {error:err});
+				}else{
+					res.redirect("/s/"+req.body.school+"/"+req.body.classs)
+				}
+			});
+			*/
+		} else {
+			console.log(err)
+			res.render('error', {error:"No user loged in"});
+		}
+	}
+  catch(err) {
+		console.log(err)
+		res.render('error', {error:err});
+	}
 })
 
 app.post('/loginenter', async (req, res) => {
@@ -425,7 +615,4 @@ app.get('/style.css', (req, res) => {
 app.listen(3000, () => {
   console.log('server started');
 });
-
-
-  
 

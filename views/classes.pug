@@ -5,7 +5,7 @@ block content
 		each clas in classes	
 			a(href= "/s/" +school + "/"+ clas.sName).school= clas.name
 				br
-				p= clas.sName
+				p= clas.teacher
 		.school Add a Class That Doesn't Have a Board Yet
 			if logedin
 				form(action='/newclass' method="post")
@@ -31,4 +31,4 @@ block content
 					input(type='submit', value='Submit')
 			else
 				p Login to add your classes
-			
+		

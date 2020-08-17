@@ -11,17 +11,19 @@ block content
 		.school Post A New Post
 			if logedin 
 				form(action='/newpost' method="post")
-					label(for='name') *Title*:
+					label(for='title') *Title*:
 					br
-					input(type='text', name='name', required, autocomplete="off")
+					textarea.input(name='title', required, autocomplete="off", rows="4" )
 					br
-					label(for='sName') *Body*:
+					label(for='body') *Body*:
 					br
-					input(type='text', name='sName', autocomplete="off")
+					textarea.input(name='body', autocomplete="off", rows="12" )
 					br
-					label(for='description:') Flair:
+					label(for='flair') Flair:
 					br
-					input(type='text', name='description', autocomplete="off", disabled)
+					input(type='text', name='flair', autocomplete="off", disabled,value="null")
+					input(type="hidden", name='school', autocomplete="off", value=school)
+					input(type="hidden", name='classs', autocomplete="off", value=classs)
 					br
 					br
 					input(type='submit', value='Submit')
