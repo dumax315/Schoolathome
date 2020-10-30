@@ -1,31 +1,86 @@
 extends headerLayout.pug
-
 block content
 	#content
-		each post in posts	
-			.school= post.title
+		.school
+			.floatLeft
+				a(href= "/s/" +school + "/c/"+ clas.sName)= clas.name
 				br
-				p= post.poster
-				p= post.body
-				a(href= "/s/" +school + "/"+classs+"/"+ post.id) expand
-		.school Post A New Post
-			if logedin 
-				form(action='/newpost' method="post")
-					label(for='title') *Title*:
+				p Teacher: 
+					= clas.teacher
+				p= clas.description
+			if logedin
+				.fav
+					label(for='myCheck') Favorite
+					if strToArr(favClasses).findIndex( element => {if (element[0] === school &&element[1] === clas.sName) {return true;}}) == -1
+						input(id=clas.sName, type='checkbox', onclick='fav("'+clas.sName+'","'+school+'")')
+					else
+						input(id=clas.sName, type='checkbox', checked='', onclick='fav("'+clas.sName+'","'+school+'")')
+		form(method='GET')
+			label(for='sort') Sort by
+			select#sort(name='sort')
+				if typeof sort == "undefined"
+					option(value='new') Newest
+					option(value='old') Oldest
+					option(value='upVotes') Most UpVoted
+				else if sort == "new"
+					option(value='new') Newest
+					option(value='old') Oldest
+					option(value='upVotes') Most UpVoted
+				else if sort == "old"
+					option(value='old') Oldest
+					option(value='new') Newest
+					option(value='upVotes') Most UpVoted
+				else if sort == "upVotes"
+					option(value='upVotes') Most UpVoted
+					option(value='new') Newest
+					option(value='old') Oldest
+			br
+			input(type='submit', value='Submit')
+		.favCla(style="padding-top:0px;")
+			each post in posts	
+				.school
+					if post.title.length >= 150
+						.titlee= post.title.substring(0,150)+"..."
+					else
+						.titlee= post.title
+					
 					br
-					textarea.input(name='title', required, autocomplete="off", rows="4" )
-					br
-					label(for='body') *Body*:
-					br
-					textarea.input(name='body', autocomplete="off", rows="12" )
-					br
-					label(for='flair') Flair:
-					br
-					input(type='text', name='flair', autocomplete="off", disabled,value="null")
-					input(type="hidden", name='school', autocomplete="off", value=school)
-					input(type="hidden", name='classs', autocomplete="off", value=classs)
-					br
-					br
-					input(type='submit', value='Submit')
-			else
-				p Login to post and get answers.
+					.voteBox(onClick="upVotePost("+post.id+",'"+school+"','"+classs+"');")
+						if strToArr(post.usersUpvoted).includes(username)
+							.arrowUp.yUpvoted(id="pID"+post.id)
+						else
+							.arrowUp(id="pID"+post.id)
+						.div(id="sID"+post.id)=post.score
+						if(post.flair == "ans")
+							p.ans Answered
+					if post.body.length >= 650
+						p= post.body.substring(0,650)+"..."
+					else
+						p= post.body
+					
+					p posted by: 
+						= post.poster
+					a(href= "/s/" +school + "/c/"+classs+"/p/"+ post.id) expand
+					
+			
+			.school Post A New Post
+				if logedin 
+					form(action='/newpost' method="post")
+						label(for='title') *Title*:
+						br
+						textarea.input(name='title', required, autocomplete="off", rows="2" )
+						br
+						label(for='body') *Body*:
+						br
+						textarea.input(name='body', autocomplete="off", rows="6" )
+						br
+						//label(for='flair') Flair:
+						//br
+						//input(type='text', name='flair', autocomplete="off", disabled,value="null")
+						input(type="hidden", name='school', autocomplete="off", value=school)
+						input(type="hidden", name='classs', autocomplete="off", value=classs)
+						br
+						br
+						input(type='submit', value='Submit')
+				else
+					p Login to post and get answers.

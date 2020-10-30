@@ -1,0 +1,27 @@
+extends headerLayout.pug
+
+block content
+	#content
+		.favCla
+			h3 Your Favorited Classes:
+			-var iii = 0;
+			each clas in classes
+				.school
+					.floatLeft
+						a(href= "/s/" +school[iii][0] + "/c/"+ clas.sName)= clas.name
+						br
+						p Teacher: 
+							= clas.teacher
+					if logedin
+						.fav
+							label(for='myCheck') Favorite
+							if strToArr(favClasses).findIndex( element => {if (element[0] === school[iii][0] &&element[1] === clas.sName) {return true;}}) == -1
+								input(id=clas.sName, type='checkbox', onclick='fav("'+clas.sName+'","'+school[iii][0]+'")')
+							else
+								input(id=clas.sName, type='checkbox', checked='', onclick='fav("'+clas.sName+'","'+school[iii][0]+'")')
+				-iii++
+		a(href="/s/" + userSchool.sName).school= userSchool.lName
+			br 
+			p= userSchool.sName
+		a(href="https://schoolathome.theohalpern.repl.co/").school 
+			p Go To All Schools

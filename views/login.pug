@@ -1,0 +1,8 @@
+extends headerLayout.pug
+block content
+	.cForm
+		a#cA(href='https://schoolathome.theohalpern.repl.co/createAccount') Create an Account
+		div
+			| login with Google (only option):
+			#mainGSignIn.g-signin2(data-onsuccess='onSignIn')
+		script(src='script.js')

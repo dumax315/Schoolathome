@@ -3,19 +3,49 @@ html
 	head
 		meta(charset='utf-8')
 		meta(name='viewport', content='width=device-width')
-		title repl.it
+		title Qustion Connection
+		link(rel='icon',type="image/png" href='https://schoolathome.theohalpern.repl.co/favicon.png')
 		link(href='https://schoolathome.theohalpern.repl.co/style.css', rel='stylesheet', type='text/css')
+		// Global site tag (gtag.js) - Google Analytics
+		script(async='', src='https://www.googletagmanager.com/gtag/js?id=UA-177382652-1')
+		script.
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+			gtag('config', 'UA-177382652-1');
+
 	body
+		-function strToArr(r){if(null!==r){var t=[],h="";for(i=1;i<r.length;i++)if("ᙍ"==r.charAt(i))for(var a="",c=!0,A=0;c;){if("ᙊ"==r.charAt(i)){if(A-=1,a+=r.charAt(i),0==A){const r=i;h=strToArr(a),t.push(h),i=r,h="",c=!1}}else"ᙍ"==r.charAt(i)?(A++,a+=r.charAt(i)):"ᗵ"==r.charAt(i)||"ᙊ"==r.charAt(i)||(a+=r.charAt(i));i++}else"෴"==r.charAt(i)?(t.push(h),h=""):"ᗵ"==r.charAt(i)||"ᙊ"==r.charAt(i)||(h+=r.charAt(i));return""!==h&&(t.push(h),h=""),t}return[]}
 		script(src='https://schoolathome.theohalpern.repl.co/script.js')
-		#header
-			#location= location
-			if logedin
-				#signedInAs Signed in as: 
-					=username
-				a#signOut(href='https://schoolathome.theohalpern.repl.co/signout') Sign out
+		
+
+		header.header
+			if location.length >= 35
+				a.logo(href='https://schoolathome.theohalpern.repl.co/home')= location.substring(0,35)+"..."
 			else
-				a#cA(href='https://schoolathome.theohalpern.repl.co/createAccount') Create an Account
-				a#lI(href='https://schoolathome.theohalpern.repl.co/login') Login	
+				a.logo(href='https://schoolathome.theohalpern.repl.co/home')= location
+			input#menu-btn.menu-btn(type='checkbox')
+			label.menu-icon(for='menu-btn')
+				span.navicon
+			ul.menu
+				if logedin
+					li
+						.a#signedInAs Signed in as: 
+							=username
+					li
+						a#signOut(href='https://schoolathome.theohalpern.repl.co/signout') Sign out
+				else
+					li
+						a#cA(href='https://schoolathome.theohalpern.repl.co/createAccount') Create an Account
+					li
+						a#lI(href='https://schoolathome.theohalpern.repl.co/login?goBackTo=') Login
+					script.
+						var tosend = window.location.href;
+						document.getElementById("lI").href += tosend;
+				li
+					a(href="https://schoolathome.theohalpern.repl.co/search") Site Search
+			
 			script(src='https://apis.google.com/js/platform.js', async='', defer='')
 			meta(name='google-signin-client_id', content='985596922523-tr74rdm03hj1mh6tg2hpmnirvcrm4v14.apps.googleusercontent.com')
-		block content
+		.content
+			block content

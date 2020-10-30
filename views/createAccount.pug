@@ -1,0 +1,27 @@
+extends headerLayout.pug
+
+block content
+	form#createForm.cForm(action='/signup', method='get')
+		a#cA(href='https://schoolathome.theohalpern.repl.co/login') Login
+		br
+		label(for='fname') Username
+		input#fname.cFormI(type='text', name='fname')
+		br
+		br
+		label(for='lname') School
+		select#school(name='school')
+			option(value="null") choose a school
+			each school in schools
+				option(value=school.sName)= school.lName
+		br
+		label(for='lname') Grade
+		select#grade(name='grade')
+			option(value="null") choose a grade
+			option(value='9') 9
+			option(value='10') 10
+			option(value='11') 11
+			option(value='12') 12
+		.g-signin2(data-onsuccess='onSignIn')
+	script(src='https://apis.google.com/js/platform.js', async='', defer='')
+	meta(name='google-signin-client_id', content='985596922523-tr74rdm03hj1mh6tg2hpmnirvcrm4v14.apps.googleusercontent.com')
+	script(src='https://schoolathome.theohalpern.repl.co/signin.js')

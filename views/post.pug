@@ -1,67 +1,143 @@
 extends headerLayout.pug
 
 mixin commentsDisp(coms,loc)
-	each comment in coms	
-		.school= comment[0]
-			br
-			p= comment[2]
-			p= comment[1]
-			if (typeof comment[4] == "object")
-				commentsDisp(comment[4],comment[3])
-			.school Post A Reply
-				if logedin 
-					form(action='/newComment/'+loc method="post")
-						label(for='title') *Title*:
-						br
-						textarea.input(name='title', required, autocomplete="off", rows="4" )
-						br
-						label(for='body') *Body*:
-						br
-						textarea.input(name='body', autocomplete="off", rows="12" )
-						br
-						label(for='flair') Flair:
-						br
-						input(type='text', name='flair', autocomplete="off", disabled,value="null")
-						input(type="hidden", name='school', autocomplete="off", value=school)
-						input(type="hidden", name='classs', autocomplete="off", value=classs)
-						input(type="hidden", name='idee', autocomplete="off", value=idSent)
-						br
-						br
-						input(type='submit', value='Submit')
-				else
-					p Login to post and give answers.
+	each comment in coms
+		-var commentId = [loc,comment[5]].flat(2)
+		if commentId.length !== 2	
+			.school.small
+				p.smallText.titlee= comment[0]
+				.voteBox(onClick="upVoteComment('"+commentId+"',"+post.id+",'"+school+"','"+classs+"');")
+					if comment[3].includes(username)
+						.arrowUp.yUpvoted(id="pID"+commentId)
+					else
+						.arrowUp(id="pID"+commentId)
+					.div(id="sID"+commentId)=comment[3].length
+				p.smallText= comment[1]
+				p.smallText posted by: 
+					= comment[2]
+				if comment[2] == username
+					button(onClick="delComment('"+commentId+"',"+post.id+",'"+school+"','"+classs+"');") Delete Comment?
+				if typeof comment[6] == "object"
+					+commentsDisp(comment[6],commentId)
+		else
+			.school
+				p.titlee= comment[0]
+				.voteBox(onClick="upVoteComment('"+commentId+"',"+post.id+",'"+school+"','"+classs+"');")
+					if comment[3].includes(username)
+						.arrowUp.yUpvoted(id="pID"+commentId)
+					else
+						.arrowUp(id="pID"+commentId)
+					.div(id="sID"+commentId)=comment[3].length
+					if comment[4] == "ans"
+						p.ans Answer
+					
+				p= comment[1]
+				p posted by: 
+					= comment[2]
+				if comment[2] == username
+					button(onClick="delComment('"+commentId+"',"+post.id+",'"+school+"','"+classs+"');") Delete Comment?
+				if post.poster == username
+					
+					if comment[4] == "ans"
+						button(onClick="markAns('"+commentId+"',"+post.id+",'"+school+"','"+classs+"');") unMark the answer correct?
+					else
+						button(onClick="markAns('"+commentId+"',"+post.id+",'"+school+"','"+classs+"');") Mark the answer correct?
+				if typeof comment[6] == "object"
+					+commentsDisp(comment[6],commentId)
+				.school Post A Reply
+					if logedin 
+						span.dots(id=commentId+"dots")
+						span.more(id=commentId+"more")
+							form(action='/newComment' method="post")
+								label(for='title') *Title*:
+								br
+								textarea.input(name='title', required, autocomplete="off", rows="2" )
+								br
+								label(for='body') *Body*:
+								br
+								textarea.input(name='body', autocomplete="off", rows="4" )
+								br
+								label(for='flair') Flair:
+								br
+								input(type='text', name='flair', autocomplete="off", disabled,value="null")
+								input(type="hidden", name='school', autocomplete="off", value=school)
+								input(type="hidden", name='classs', autocomplete="off", value=classs)
+								input(type="hidden", name='idee', autocomplete="off", value=idSent)
+								input(type="hidden", name='commentId', autocomplete="off", value=commentId)
+								br
+								br
+								input(type='submit', value='Submit')
+						button.myBtn(id=commentId+"butt" onclick="onClickHide(this.id);") Enter comment
+					else
+						p Login to post and give answers.
 	
 
 block content
 	//-{ username: req.session.user.username, location: "SAH/" + req.params.school + "/"+req.params.class+"/"+thePost.title, logedin:true,post: thePost, comments:thePost.comments, school:req.params.school,classs:req.params.class}
 	#content
-		.school= post.title
-			br
-			p= post.poster
+		.school
+			p.titlee= post.title
+			.voteBox(onClick="upVotePost("+post.id+",'"+school+"','"+classs+"');")
+				if strToArr(post.usersUpvoted).includes(username)
+					.arrowUp.yUpvoted(id="pID"+post.id)
+				else
+					.arrowUp(id="pID"+post.id)
+				.div(id="sID"+post.id)=post.score
+				if(post.flair == "ans")
+					p.ans Answered
+				
 			p= post.body	
+			p posted by: 
+				= post.poster
+			if post.poster == username
+				button(onClick="delPost('"+post.id+"','"+school+"','"+classs+"')") Delete Post?
 			.school Post A Reply
 				if logedin 
-					form(action='/newComment/'+loc method="post")
-						label(for='title') *Title*:
-						br
-						textarea.input(name='title', required, autocomplete="off", rows="4" )
-						br
-						label(for='body') *Body*:
-						br
-						textarea.input(name='body', autocomplete="off", rows="12" )
-						br
-						label(for='flair') Flair:
-						br
-						input(type='text', name='flair', autocomplete="off", disabled,value="null")
-						input(type="hidden", name='school', autocomplete="off", value=school)
-						input(type="hidden", name='classs', autocomplete="off", value=classs)
-						input(type="hidden", name='idee', autocomplete="off", value=idSent)
-						br
-						br
-						input(type='submit', value='Submit')
+					span.dots(id="topdots")
+					span.more(id="topmore")
+						form(action='/newComment/' method="post")
+							label(for='title') *Title*:
+							br
+							textarea.input(name='title', required, autocomplete="off", rows="2" )
+							br
+							label(for='body') *Body*:
+							br
+							textarea.input(name='body', autocomplete="off", rows="4" )
+							br
+							label(for='flair') Flair:
+							br
+							input(type='text', name='flair', autocomplete="off", disabled,value="null")
+							input(type="hidden", name='school', autocomplete="off", value=school)
+							input(type="hidden", name='classs', autocomplete="off", value=classs)
+							input(type="hidden", name='idee', autocomplete="off", value=idSent)
+							br
+							br
+							input(type='submit', value='Submit')
+					button.myBtn(id="topbutt" onclick="onClickHide(this.id);") Enter comment
 				else
 					p Login to post and give answers.	
-			+commentsDisp(comments) 
+			form(method='GET')
+				label(for='sort') Sort by
+				select#sort(name='sort')
+					if typeof sort == "undefined"
+						option(value='upVotes') Most UpVoted
+						option(value='new') Newest
+						option(value='old') Oldest
+					else if sort == "new"
+						option(value='new') Newest
+						option(value='old') Oldest
+						option(value='upVotes') Most UpVoted
+					else if sort == "old"
+						option(value='old') Oldest
+						option(value='new') Newest
+						option(value='upVotes') Most UpVoted
+					else if sort == "upVotes"
+						option(value='upVotes') Most UpVoted
+						option(value='new') Newest
+						option(value='old') Oldest
+				br
+				input(type='submit', value='Submit')
+			+commentsDisp(comments,"top") 
 
 
 		

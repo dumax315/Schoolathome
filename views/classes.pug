@@ -3,9 +3,20 @@ extends headerLayout.pug
 block content
 	#content
 		each clas in classes	
-			a(href= "/s/" +school + "/"+ clas.sName).school= clas.name
-				br
-				p= clas.teacher
+			.school
+				.floatLeft
+					a(href= "/s/" +school + "/c/"+ clas.sName)= clas.name
+					br
+					p Teacher: 
+						= clas.teacher
+				if logedin
+					.fav
+						label(for='myCheck') Favorite
+						if strToArr(favClasses).findIndex( element => {if (element[0] === school &&element[1] === clas.sName) {return true;}}) == -1
+							input(id=clas.sName, type='checkbox', onclick='fav("'+clas.sName+'","'+school+'")')
+						else
+							input(id=clas.sName, type='checkbox', checked='', onclick='fav("'+clas.sName+'","'+school+'")')
+
 		.school Add a Class That Doesn't Have a Board Yet
 			if logedin
 				form(action='/newclass' method="post")

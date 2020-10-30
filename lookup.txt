@@ -35,3 +35,32 @@ con.query(sql, function (err, result) {
 	console.log(result);
 });
 */
+
+ᙍᙍᗵThis is a top level commentᗵ෴ᗵThis is the body of that commentᗵ෴ᗵTheologyᗵ෴ᗵ0ᗵ෴ᙍᙍᗵthis is a seccond level commentᗵ෴ᗵComment chains can go on a long timeᗵ෴ᗵTheologyᗵ෴ᗵ0ᗵ෴ᙍᙍᗵthey took forever to codeᗵ෴ᗵasdfᗵ෴ᗵTheologyᗵ෴ᗵ0ᗵ෴ᙍᙍᗵthis is a forth level commentᗵ෴ᗵᗵ෴ᗵTheologyᗵ෴ᗵ0ᗵᙊᙊᙊᙊᙊ෴ᙍᙍᗵthey took forever to codeᗵ෴ᗵasdfᗵ෴ᗵTheologyᗵ෴ᗵ0ᗵ෴ᙍᙍᗵthis is a forth level commentᗵ෴ᗵᗵ෴ᗵTheologyᗵ෴ᗵ0ᗵᙊᙊᙊᙊᙊᙊ෴ᙍᙍᗵthis is a seccond level commentᗵ෴ᗵComment chains can go on a long timeᗵ෴ᗵTheologyᗵ෴ᗵ0ᗵ෴ᙍᙍᗵthey took forever to codeᗵ෴ᗵasdfᗵ෴ᗵTheologyᗵ෴ᗵ0ᗵᙊᙊᙊᙊ෴ᙍᙍᗵthis is a seccond level commentᗵ෴ᗵComment chains can go on a long timeᗵ෴ᗵTheologyᗵ෴ᗵ0ᗵ෴ᙍᙍᗵthey took forever to codeᗵ෴ᗵasdfᗵ෴ᗵTheologyᗵ෴ᗵ0ᗵ෴ᙍᙍᗵthis is a forth level commentᗵ෴ᗵᗵ෴ᗵTheologyᗵ෴ᗵ0ᗵᙊᙊᙊᙊᙊ෴ᙍᙍᗵthey took forever to codeᗵ෴ᗵasdfᗵ෴ᗵTheologyᗵ෴ᗵ0ᗵ෴ᙍᙍᗵthis is a forth level commentᗵ෴ᗵᗵ෴ᗵTheologyᗵ෴ᗵ0ᗵᙊᙊᙊᙊᙊᙊ
+┌─────────┬─────────────────────────────────────────────────────────────────────────────────────────────────────────────┬────────────────────────────────────┬────────────┬─────┬──────────────────────┐
+│ (index) │                                                      0                                                      │                 1                  │     2      │  3  │          4           │
+├─────────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────┼────────────────────────────────────┼────────────┼─────┼──────────────────────┤
+│    0    │                                        'This is a top level comment'                                        │ 'This is the body of that comment' │ 'Theology' │ '0' │ [ [Array], [Array] ] │
+│    1    │ [ 'this is a seccond level comment', 'Comment chains can go on a long time', 'Theology', ... 2 more items ] │                                    │            │     │                      │
+│    2    │ [ 'this is a seccond level comment', 'Comment chains can go on a long time', 'Theology', ... 2 more items ] │            [ [Array] ]             │            │     │                      │
+└─────────┴─────────────────────────────────────────────────────────────────────────────────────────────────────────────┴────────────────────────────────────┴────────────┴─────┴──────────────────────┘
+
+┌─────────┬──────────────────────────────────────────────────────┬────────────────────┬────────────┬─────┬─────────────┐
+│ (index) │                          0                           │         1          │     2      │  3  │      4      │
+├─────────┼──────────────────────────────────────────────────────┼────────────────────┼────────────┼─────┼─────────────┤
+│    0    │                        'asdf'                        │     'asdfasdf'     │ 'Theology' │ '0' │ [ [Array] ] │
+│    1    │                      'asdfasdf'                      │ 'asdfasdfasdfasdf' │ 'Theology' │ '1' │             │
+│    2    │ [ 'dasdg', 'aesgase', 'Theology', ... 2 more items ] │                    │            │     │             │
+└─────────┴──────────────────────────────────────────────────────┴────────────────────┴────────────┴─────┴─────────────┘
+
+
+
+[
+	['test','asdf','Theology','0',[
+		['2 trest','asdfasdfasdf','Theology','0',[['bro','asdfasdfasdfasdf','Theology','0']]]
+	]],
+	[['2 trest','asdfasdfasdf','Theology','0',[['bro','asdfasdfasdfasdf','Theology','0']]]]
+]
+
+
+ᙍᙍᗵyo I think my new styling is workingᗵ෴ᗵI would be really cool if you didᗵ෴ᗵTheologyᗵ෴ᗵ0ᗵ෴ᗵflairᗵ෴ᗵ0ᗵ෴ᙍᙍᗵthis is a comment chaineᗵ෴ᗵYahhhhh whoooooooᗵ෴ᗵTheologyᗵ෴ᗵ0ᗵ෴ᗵflairᗵ෴ᗵ0ᗵᙊ෴ᙍᗵI disssagree strongly with what has been saidᗵ෴ᗵburhᗵ෴ᗵTheologyᗵ෴ᗵ0ᗵ෴ᗵflairᗵ෴ᗵ1ᗵᙊ෴ᙍᗵI'm a totly different userᗵ෴ᗵbroooooᗵ෴ᗵtester2ᗵ෴ᗵ0ᗵ෴ᗵflairᗵ෴ᗵ2ᗵᙊᙊᙊ෴ᙍᗵnew way for upvotesᗵ෴ᗵᗵ෴ᗵTheologyᗵ෴ᗵᗵ෴ᗵflairᗵ෴ᗵ1ᗵᙊᙊ
