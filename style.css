@@ -1,8 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&family=Rubik:wght@400&display=swap');
 body {
 	margin:0px;
+	background-color:rgb(17, 27, 17);
+	background-image: url("back");
+	background-repeat: no-repeat;
+  background-attachment: fixed;
+	font-family: 'Roboto', sans-serif;
 }
 p{
-	margin-top: 0px;
+	margin: 0px;
 }
 #header {
 	display:flex;
@@ -13,12 +19,15 @@ p{
   padding:1.2em;
 	top:0;
   width: calc(100%-2.4em); /* Full width */
+	font-family: 'Rubik', sans-serif;
 }
 #content {
 	display: flex;
 	flex-direction: column;
 	padding-left:1em;
 	padding-right:1em;
+	max-width: 900px;
+	margin:auto;
 	
 }
 .favCla {
@@ -28,16 +37,21 @@ p{
 	padding: 1em;
 
 	margin-top:1em;
-	background-color: rgb(215, 193, 236);
+	background-color: rgb(33, 34, 37);
 }
 h3 {
 	margin: 0px;
+	font-family: 'Rubik', sans-serif;
+	color:white;
 }
 .school{
 	padding:1.3em;
 	background-color:lightblue;
 	margin-top:1em;
-	border: 6px solid red;
+	background: rgb(55,57,63);
+	color: rgb(225, 225, 225);
+	border-radius: 1.2em;
+	text-decoration: none;
 }
 .input {
 	width: 100%;
@@ -64,7 +78,9 @@ h3 {
   border-right: 15px solid transparent;
   border-bottom: 15px solid black;
 }
-
+.sortby {
+	margin-left:3em;
+}
 .voteBox {
 	text-align: center;
 	float: left;
@@ -74,17 +90,22 @@ h3 {
 .yUpvoted {
 	border-bottom: 15px solid red;
 }
-
+.main {
+	margin-bottom: 1em;
+}
 .small {
 	margin:0px;
-	margin-left:-1em;
+	margin-left:-.5em;
 	margin-right:-1.3em;
-	margin-top:-6px;
-	padding:.3em;
-	border-right:0px solid red;
+	margin-top:.6em;
+	padding:.5em;
+	border-radius: .4em 0em 0em .4em;
+	border-right:0px solid #827191;
 	min-height: 50px;
 }
-
+.res{
+	background-color: rgb(33,34,37);
+}
 .smallText {
 	margin:0px;
 }
@@ -93,17 +114,24 @@ h3 {
 	font-weight: bold;
 	font-size: large;
 	margin-top:0px;
+	font-family: 'Rubik', sans-serif;
+}
+a.darkmode {
+	color:#62BFED;
 }
 .cForm {
-	background-color:skyblue;
-	padding:2em;
-	border: 2px solid red;
-  border-radius: 5px;
+	border: 2px solid #827191;
 	width:65%;
 	position: fixed;
   top: 30%;
   left: 50%;
-  /* bring your own prefixes */
+  padding:2em;
+	background-color:lightblue;
+	margin-top:1em;
+	background: rgb(55,57,63);
+	color: rgb(225, 225, 225);
+	border-radius: 1.2em;
+	text-decoration: none;
   transform: translate(-50%, -50%);
 }
 #grade {
@@ -122,16 +150,22 @@ h3 {
   font-size: 16px;
   resize: none;
 }
+#sort {
+	margin-left:1em;
+	margin-right:1em;
+}
 #location{
 	color: black;
   text-decoration: none;
 }
+.flex{
+	display: flex;
+}
 .floatLeft{
-	float: left;
-	margin-bottom: -1em;
+	flex-grow:3;
 }
 .fav {
-	float: right;
+	flex-shrink: 0;
 }
 
 .gsc-control-cse.gsc-control-cse-en{
@@ -140,9 +174,14 @@ h3 {
 	padding:0px;
 	border: 0px solid #fff;
 }
-
+.g-signin2 {
+  margin-top: 1em;
+}
+.white{
+	color:white;
+}
 .ans {
-	color:green;
+	color:rgb(63, 212, 63);
 }
 /* header */
 
@@ -262,7 +301,7 @@ h3 {
 .header .logo {
 	font-size: 16px;
 }
-@media (min-width: 48em) {
+@media (min-width: 53em) {
   .header li {
     float: left;
   }

@@ -1384,6 +1384,9 @@ app.get('/favicon.png', (req, res) => {
 app.get('/signin.js', (req, res) => {
   res.sendFile(__dirname + '/signin.js');
 });
+app.get('/back', (req, res) => {
+  res.sendFile(__dirname + '/back.webp');
+});
 app.get('/style.css', (req, res) => {
   res.sendFile(__dirname + '/style.css');
 });
