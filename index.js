@@ -278,10 +278,11 @@ app.use(function(req, res, next) {
 
 var con = mysql.createPool({
   host: "remotemysql.com",
-  user: "bB3Dq1wsqu",
-  password: "3sAnOYv3UT",
-	database: "bB3Dq1wsqu"
+  user: "9DMClKlmNb",
+  password: "m0Wauq9NrC",
+	database: "9DMClKlmNb"
 });
+
 
 
 // Attempt to catch disconnects 
