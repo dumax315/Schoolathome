@@ -205,7 +205,7 @@ var smtpConfig = {
     service:"gmail",
     auth: {
         user: 'dumax315@gmail.com',
-        pass: "Pen 3 Sword!!"
+        pass: process.env['emailpass']
     }
 };
 var transporter = nodemailer.createTransport(smtpConfig);
@@ -279,7 +279,7 @@ app.use(function(req, res, next) {
 var con = mysql.createPool({
   host: "remotemysql.com",
   user: "9DMClKlmNb",
-  password: "m0Wauq9NrC",
+  password:process.env['sqlpass'],
 	database: "9DMClKlmNb"
 });
 
